@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @question.title %>
+</p>
+
+<p>
+  <strong>Q 1:</strong>
+  <%= @question.q_1 %>
+</p>
+
+<p>
+  <strong>Q 1 count:</strong>
+  <%= @question.q_1_count %>
+</p>
+
+<p>
+  <strong>Q 2:</strong>
+  <%= @question.q_2 %>
+</p>
+
+<p>
+  <strong>Q 2 count:</strong>
+  <%= @question.q_2_count %>
+</p>
+
+<p>
+  <strong>Q 3:</strong>
+  <%= @question.q_3 %>
+</p>
+
+<p>
+  <strong>Q 3 count:</strong>
+  <%= @question.q_3_count %>
+</p>
+
+<p>
+  <strong>Q 4:</strong>
+  <%= @question.q_4 %>
+</p>
+
+<p>
+  <strong>Q 4 count:</strong>
+  <%= @question.q_4_count %>
+</p>
+
+<%= link_to 'Edit', edit_question_path(@question) %> |
+<%= link_to 'Back', questions_path %>

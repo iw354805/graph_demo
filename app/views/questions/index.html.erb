@@ -1,0 +1,43 @@
+<h1>Listing questions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Q 1</th>
+      <th>Q 1 count</th>
+      <th>Q 2</th>
+      <th>Q 2 count</th>
+      <th>Q 3</th>
+      <th>Q 3 count</th>
+      <th>Q 4</th>
+      <th>Q 4 count</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @questions.each do |question| %>
+      <tr>
+        <td><%= question.title %></td>
+        <td><%= question.q_1 %></td>
+        <td><%= question.q_1_count %></td>
+        <td><%= question.q_2 %></td>
+        <td><%= question.q_2_count %></td>
+        <td><%= question.q_3 %></td>
+        <td><%= question.q_3_count %></td>
+        <td><%= question.q_4 %></td>
+        <td><%= question.q_4_count %></td>
+        <td><%= link_to 'Show', question %></td>
+        <td><%= link_to 'Edit', edit_question_path(question) %></td>
+        <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Question', new_question_path %>

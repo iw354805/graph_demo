@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  q_1: MyString
+  q_1_count: 1
+  q_2: MyString
+  q_2_count: 1
+  q_3: MyString
+  q_3_count: 1
+  q_4: MyString
+  q_4_count: 1
+
+two:
+  title: MyString
+  q_1: MyString
+  q_1_count: 1
+  q_2: MyString
+  q_2_count: 1
+  q_3: MyString
+  q_3_count: 1
+  q_4: MyString
+  q_4_count: 1
