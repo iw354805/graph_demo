@@ -1,6 +1,6 @@
 GraphDemo::Application.routes.draw do
   resources :questions
-
+  match 'questions/increment/:id/:q', to: 'questions#increment', :via => [:get], as: :increment
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

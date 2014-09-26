@@ -13,6 +13,7 @@
 <p>
   <strong>Q 1 count:</strong>
   <%= @question.q_1_count %>
+  <%= link_to 'update time', increment_path(q: 'q_1_count'), remote: true %>
 </p>
 
 <p>
@@ -23,6 +24,7 @@
 <p>
   <strong>Q 2 count:</strong>
   <%= @question.q_2_count %>
+  <%= link_to 'update time', increment_path(q: 'q_2_count'), remote: true %>
 </p>
 
 <p>
@@ -33,6 +35,7 @@
 <p>
   <strong>Q 3 count:</strong>
   <%= @question.q_3_count %>
+  <%= link_to 'update time', increment_path(q: 'q_3_count'), remote: true %>
 </p>
 
 <p>
@@ -43,6 +46,7 @@
 <p>
   <strong>Q 4 count:</strong>
   <%= @question.q_4_count %>
+  <%= link_to 'update time', increment_path(q: 'q_4_count'), remote: true %>
 </p>
 
 <%= link_to 'Edit', edit_question_path(@question) %> |

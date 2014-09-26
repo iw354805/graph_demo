@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :set_question, only: [:show, :edit, :update, :destroy, :increment]
 
   # GET /questions
   # GET /questions.json
@@ -59,6 +59,11 @@ class QuestionsController < ApplicationController
       format.html { redirect_to questions_url }
       format.json { head :no_content }
     end
+  end
+
+  def increment
+    @question.increment!(params[:q])
+    render json: {success: true}
   end
 
   private
