@@ -1,5 +1,26 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :edit, :update, :destroy, :increment]
+  include ActionController::Live
+
+  before_action :set_question, only: [:stream, :show, :edit, :update, :destroy, :increment]
+
+  def stream
+    response.headers['Content-Type'] = 'text/event-stream'
+
+    10.times do |i|
+      Question.uncached do
+        set_question
+      end
+      p @question
+      response.stream.write("event: message\n")
+      response.stream.write("data: #{@question.to_json}\n\n")
+      sleep 2
+    end
+
+    response.stream.write("event: done\n")
+    response.stream.write("data: done\n\n")
+  ensure
+    response.stream.close
+  end
 
   # GET /questions
   # GET /questions.json

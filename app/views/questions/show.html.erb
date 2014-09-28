@@ -5,6 +5,24 @@
   <%= @question.title %>
 </p>
 
+<div id="result">
+</div>
+
+<%= javascript_tag do %>
+    $(function() {
+        var eventSource = new EventSource("<%= stream_path %>");
+
+        eventSource.addEventListener("message", function(event) {
+            message = $.parseJSON(event.data);
+            $("#result").text(event.data);
+        });
+        eventSource.addEventListener("done", function(event) {
+            this.close();
+            $("#result").text(event.data);
+        });
+    });
+<% end %>
+
 <p>
   <strong>Q 1:</strong>
   <%= @question.q_1 %>
