@@ -1,0 +1,41 @@
+html {	height:100%;}
+body {
+	margin:0;
+	padding:0;
+	height:100%;
+	background:#333;
+}
+#wrapper {
+	margin:0 auto;
+	position:relative;
+	max-width:960px;
+	height:100%;
+}
+#chart-container {
+	top:50%;
+	left:50%;
+	position:absolute;
+	width:100%;
+	height:61.8%;
+	transform:translate(-50%, -50%);
+	-webkit-transform:translate(-50%, -50%);
+}
+#chart-container svg {
+	display:block;
+	height:100%;
+	font-family:Arial, Helvetica, sans-serif;
+}
+#chart-container svg .axis {	font-size:12px;}
+#chart-container svg .axis path,
+#chart-container svg .axis line {
+	fill:none;
+	stroke:rgba(255, 255, 255, 0.05);
+	shape-rendering:crispEdges;
+}
+#chart-container svg .axis text {	fill:#fff;}
+#chart-container svg .bars text {
+	fill:#222;
+	stroke:none;
+	font-size:30px;
+	letter-spacing:-1px;
+}

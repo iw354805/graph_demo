@@ -6,14 +6,23 @@ class QuestionsController < ApplicationController
   def stream
     response.headers['Content-Type'] = 'text/event-stream'
 
-    10.times do |i|
-      Question.uncached do
-        set_question
+    100.times do |i|
+      ActiveRecord::Base.connection_pool.with_connection do
+        Question.uncached do
+          set_question
+        end
       end
-      p @question
+
+      res = [
+        {label: @question.q_1, value: @question.q_1_count},
+        {label: @question.q_2, value: @question.q_2_count},
+        {label: @question.q_3, value: @question.q_3_count},
+        {label: @question.q_4, value: @question.q_4_count},
+      ]
+
       response.stream.write("event: message\n")
-      response.stream.write("data: #{@question.to_json}\n\n")
-      sleep 2
+      response.stream.write("data: #{res.to_json}\n\n")
+      sleep 3
     end
 
     response.stream.write("event: done\n")

@@ -1,20 +1,142 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @question.title %>
-</p>
-
-<div id="result">
+<div id="wrapper">
+  <div id="chart-container"></div>
 </div>
 
 <%= javascript_tag do %>
+    var chart = {};
+    chart.isInit = true;
+
+    chart.container = document.getElementById('chart-container');
+    chart.margin = {top:20, right:20, bottom:30, left:50};
+    chart.barPadding = 0.4;
+
+    chart.width = chart.container.clientWidth - chart.margin.left - chart.margin.right;
+    chart.height = chart.container.clientHeight - chart.margin.top - chart.margin.bottom;
+
+    chart.scaleX = d3.scale.ordinal().rangeRoundBands([0, chart.width], chart.barPadding);
+    chart.scaleY = d3.scale.linear().range([chart.height, 0]);
+
+    chart.xAxis = d3.svg.axis()
+      .scale(chart.scaleX)
+      .orient('bottom')
+      .innerTickSize(0)
+      .outerTickSize(0)
+      .tickPadding(15);
+    chart.yAxis = d3.svg.axis()
+      .scale(chart.scaleY)
+      .orient('left')
+      .innerTickSize(-chart.width)
+      .outerTickSize(0)
+      .tickPadding(10);
+
+    chart.colors = ['#d64a4c', '#eca634', '#84aa64', '#4eb7d5', '#dc874e', '#a4a634', '#8caaac', '#6cc9fc'];
+    chart.tween = {duration:500};
+
+    chart.svg = d3.select('#chart-container').append('svg')
+      .attr('width', chart.width + chart.margin.left + chart.margin.right)
+      .attr('height', chart.height + chart.margin.top + chart.margin.bottom)
+      .append('g')
+        .attr('class', 'wrapper')
+        .attr('transform', 'translate(' + chart.margin.left + ',' + chart.margin.top + ')');
+
+    chart.svg.append('g').attr('class', 'axis');
+    chart.svg.append('g').attr('class', 'bars');
+
+    //** Draw chart
+    chart.draw = function(data) {
+      chart.scaleX.domain(data.map(function(d) { return d.label}));
+      chart.scaleY.domain([0, d3.max(data, function(d) { return d.value})]);
+
+      var bar = chart.svg.select('.bars').selectAll('.bar').data(data);
+      bar.enter().append('rect')
+        .attr('class', 'bar')
+        .attr('fill', function(d, i) { return chart.colors[i];})
+        .attr('x', function(d) { return (chart.isInit)? chart.scaleX(d.label) : chart.width;})
+        .attr('width', chart.scaleX.rangeBand())
+        .attr('y', chart.height)
+        .attr('height', 0)
+        .transition().duration(chart.tween.duration)
+          .attr('x', function(d) { return chart.scaleX(d.label);})
+          .attr('y', function(d) { return chart.scaleY(d.value);})
+          .attr('height', function(d) { return chart.height - chart.scaleY(d.value);});
+      bar.exit()
+        .transition().duration(chart.tween.duration)
+          .attr('x', chart.width)
+          .attr('y', chart.height)
+          .attr('height', 0)
+          .remove();
+
+      var value = chart.svg.select('.bars').selectAll('.value').data(data);
+      value.enter().append('text')
+        .attr('class', 'value')
+        .attr('text-anchor', 'middle')
+        .attr('x', function(d) { return (chart.isInit)? (chart.scaleX.rangeBand() / 2) + chart.scaleX(d.label) : chart.width; })
+        .attr('y', chart.height)
+        .attr('dy', '1em')
+        .style('opacity', 0)
+        .text(0)
+        .transition().duration(chart.tween.duration)
+          .tween('text', function(d) {
+            return chart.tweeningValue(this, d.value);
+          })
+          .attr("x", function(d) { return (chart.scaleX.rangeBand() / 2) + chart.scaleX(d.label); })
+          .attr('y', function(d) { return chart.scaleY(d.value);})
+          .style('opacity', 1);
+      value.exit()
+        .transition().duration(chart.tween.duration)
+          .attr('x', chart.width)
+          .attr('y', chart.height)
+          .style('opacity', 0)
+          .remove();
+
+      if(chart.isInit) {
+        chart.svg.select('.axis').append('g')
+          .attr('class', 'x')
+          .attr('transform', 'translate(0,' + chart.height + ')')
+          .call(chart.xAxis);
+        chart.svg.select('.axis').append('g')
+          .attr('class', 'y')
+          .call(chart.yAxis);
+
+        chart.isInit = false;
+      } else {
+        bar.transition().duration(chart.tween.duration)
+          .attr('x', function(d) { return chart.scaleX(d.label);})
+          .attr('width', chart.scaleX.rangeBand())
+          .attr('y', function(d) { return chart.scaleY(d.value);})
+          .attr('height', function(d) { return chart.height - chart.scaleY(d.value);});
+
+        value.transition().duration(chart.tween.duration)
+          .tween('text', function(d) {
+            return chart.tweeningValue(this, d.value);
+          })
+          .attr("x", function(d) { return (chart.scaleX.rangeBand() / 2) + chart.scaleX(d.label); })
+          .attr('y', function(d) { return chart.scaleY(d.value);})
+          .style('opacity', 1);
+
+        chart.svg.selectAll('g.axis .x').transition().call(chart.xAxis);
+        chart.svg.selectAll('g.axis .y').transition().call(chart.yAxis);
+      }
+    }
+
+    //** Tweening value
+    chart.tweeningValue = function(t, d) {
+      var i = d3.interpolate(t.textContent, d);
+      var prec = (d + '').split('.');
+      var round = (prec.length > 1) ? Math.pow(10, prec[1].length) : 1;
+      return function(n) {
+        t.textContent = Math.round(i(n) * round) / round;
+      }
+    }
+
     $(function() {
         var eventSource = new EventSource("<%= stream_path %>");
 
         eventSource.addEventListener("message", function(event) {
             message = $.parseJSON(event.data);
-            $("#result").text(event.data);
+            chart.draw(message);
         });
         eventSource.addEventListener("done", function(event) {
             this.close();
