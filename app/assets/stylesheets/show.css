@@ -3,7 +3,12 @@ body {
 	margin:0;
 	padding:0;
 	height:100%;
+	color:#fff;
 	background:#333;
+}
+a {
+	color:#fff;
+	text-decoration:none;
 }
 #wrapper {
 	margin:0 auto;
@@ -12,13 +17,8 @@ body {
 	height:100%;
 }
 #chart-container {
-	top:50%;
-	left:50%;
-	position:absolute;
 	width:100%;
 	height:61.8%;
-	transform:translate(-50%, -50%);
-	-webkit-transform:translate(-50%, -50%);
 }
 #chart-container svg {
 	display:block;
@@ -38,4 +38,48 @@ body {
 	stroke:none;
 	font-size:30px;
 	letter-spacing:-1px;
+}
+
+#console .row {
+	margin:20px -10px;
+	padding:0 20px 0 50px;
+}
+#console .row:after {
+	display:block;
+	clear:both;
+	content:"";
+}
+#console .row p {
+	padding:0 0.4%;
+	float:left;
+	width:25%;
+	text-align:center;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+#console .row p a {
+	padding:3px 10px;
+	border-radius:4px;
+	display:inline-block;
+	color:#fff;
+	background:#4285F4;
+}
+#console .vote {
+	padding:0 5.5%;
+}
+#console .vote:after {
+	display:block;
+	clear:both;
+	content:"";
+}
+#console .btn {
+	text-align:center;
+}
+#console .btn a {
+	margin:0 10px;
+	padding:3px 10px;
+	border-radius:4px;
+	display:inline-block;
+	color:#fff;
+	background:#ECA634;
 }

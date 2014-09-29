@@ -2,7 +2,6 @@
 
 <div id="wrapper">
   <div id="chart-container"></div>
-</div>
 
 <%= javascript_tag do %>
     var chart = {};
@@ -145,49 +144,19 @@
     });
 <% end %>
 
-<p>
-  <strong>Q 1:</strong>
-  <%= @question.q_1 %>
-</p>
+<div id="console">
+  <div class="row">
+    <div class="vote">
+      <p><%= link_to '投票する', increment_path(q: 'q_1_count'), remote: true %></p>
+      <p><%= link_to '投票する', increment_path(q: 'q_2_count'), remote: true %></p>
+      <p><%= link_to '投票する', increment_path(q: 'q_3_count'), remote: true %></p>
+      <p><%= link_to '投票する', increment_path(q: 'q_4_count'), remote: true %></p>
+    </div>
+  </div>
 
-<p>
-  <strong>Q 1 count:</strong>
-  <%= @question.q_1_count %>
-  <%= link_to 'update time', increment_path(q: 'q_1_count'), remote: true %>
-</p>
-
-<p>
-  <strong>Q 2:</strong>
-  <%= @question.q_2 %>
-</p>
-
-<p>
-  <strong>Q 2 count:</strong>
-  <%= @question.q_2_count %>
-  <%= link_to 'update time', increment_path(q: 'q_2_count'), remote: true %>
-</p>
-
-<p>
-  <strong>Q 3:</strong>
-  <%= @question.q_3 %>
-</p>
-
-<p>
-  <strong>Q 3 count:</strong>
-  <%= @question.q_3_count %>
-  <%= link_to 'update time', increment_path(q: 'q_3_count'), remote: true %>
-</p>
-
-<p>
-  <strong>Q 4:</strong>
-  <%= @question.q_4 %>
-</p>
-
-<p>
-  <strong>Q 4 count:</strong>
-  <%= @question.q_4_count %>
-  <%= link_to 'update time', increment_path(q: 'q_4_count'), remote: true %>
-</p>
-
-<%= link_to 'Edit', edit_question_path(@question) %> |
-<%= link_to 'Back', questions_path %>
+  <div class="row btn">
+    <%= link_to 'Edit', edit_question_path(@question) %> |
+    <%= link_to 'Back', questions_path %>
+  </div>
+</div>
+</div>
