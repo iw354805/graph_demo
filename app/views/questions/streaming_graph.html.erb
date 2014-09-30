@@ -1,4 +1,3 @@
-<p id="notice"><%= notice %></p>
 <p class="title"><%= @question.title %></p>
 <div id="wrapper">
   <div id="chart-container"></div>
@@ -130,15 +129,18 @@
       }
     }
 
-    var exec_d3 = function() {
-      d3.json('<%= get_status_path %>', function(err, res) {
-        setTimeout(function() {
-          chart.draw($.parseJSON(res.success));
-        }, 500);
-      });
-    }
+    $(function() {
+        var eventSource = new EventSource("<%= stream_path %>");
 
-    exec_d3();
+        eventSource.addEventListener("message", function(event) {
+            message = $.parseJSON(event.data);
+            chart.draw(message);
+        });
+        eventSource.addEventListener("done", function(event) {
+            this.close();
+            window.location.reload();
+        });
+    });
 <% end %>
 
 <div id="console">
@@ -149,10 +151,6 @@
       <p><%= link_to '投票する', increment_path(q: 'q_3_count'), remote: true %></p>
       <p><%= link_to '投票する', increment_path(q: 'q_4_count'), remote: true %></p>
     </div>
-  </div>
-
-  <div class="row btn reload" onclick="exec_d3();">
-    <a href="javascript:void(0)">グラフを再取得する</a>
   </div>
 
   <div class="row btn">

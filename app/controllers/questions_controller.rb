@@ -1,12 +1,12 @@
 class QuestionsController < ApplicationController
   include ActionController::Live
 
-  before_action :set_question, only: [:stream, :show, :edit, :update, :destroy, :increment]
+  before_action :set_question, only: [:stream, :get_status, :show, :streaming_graph, :edit, :update, :destroy, :increment]
 
   def stream
     response.headers['Content-Type'] = 'text/event-stream'
 
-    100.times do |i|
+    300.times do |i|
       ActiveRecord::Base.connection_pool.with_connection do
         Question.uncached do
           set_question
@@ -22,7 +22,7 @@ class QuestionsController < ApplicationController
 
       response.stream.write("event: message\n")
       response.stream.write("data: #{res.to_json}\n\n")
-      sleep 3
+      sleep 1
     end
 
     response.stream.write("event: done\n")
@@ -31,6 +31,15 @@ class QuestionsController < ApplicationController
     response.stream.close
   end
 
+  def get_status
+    res = [
+      {label: @question.q_1, value: @question.q_1_count},
+      {label: @question.q_2, value: @question.q_2_count},
+      {label: @question.q_3, value: @question.q_3_count},
+      {label: @question.q_4, value: @question.q_4_count},
+    ]
+    render json: {success: res.to_json}
+  end
   # GET /questions
   # GET /questions.json
   def index
@@ -40,6 +49,9 @@ class QuestionsController < ApplicationController
   # GET /questions/1
   # GET /questions/1.json
   def show
+  end
+
+  def stream_show
   end
 
   # GET /questions/new
