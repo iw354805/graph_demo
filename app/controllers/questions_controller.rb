@@ -13,15 +13,8 @@ class QuestionsController < ApplicationController
         end
       end
 
-      res = [
-        {label: @question.q_1, value: @question.q_1_count},
-        {label: @question.q_2, value: @question.q_2_count},
-        {label: @question.q_3, value: @question.q_3_count},
-        {label: @question.q_4, value: @question.q_4_count},
-      ]
-
       response.stream.write("event: message\n")
-      response.stream.write("data: #{res.to_json}\n\n")
+      response.stream.write("data: #{create_json_response.to_json}\n\n")
       sleep 1
     end
 
@@ -32,13 +25,7 @@ class QuestionsController < ApplicationController
   end
 
   def get_status
-    res = [
-      {label: @question.q_1, value: @question.q_1_count},
-      {label: @question.q_2, value: @question.q_2_count},
-      {label: @question.q_3, value: @question.q_3_count},
-      {label: @question.q_4, value: @question.q_4_count},
-    ]
-    render json: {success: res.to_json}
+      render json: create_json_response.to_json
   end
   # GET /questions
   # GET /questions.json
@@ -105,7 +92,7 @@ class QuestionsController < ApplicationController
 
   def increment
     @question.increment!(params[:q])
-    render json: {success: true}
+    render json: create_json_response, status: 200
   end
 
   private
@@ -117,5 +104,14 @@ class QuestionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
       params.require(:question).permit(:title, :q_1, :q_1_count, :q_2, :q_2_count, :q_3, :q_3_count, :q_4, :q_4_count)
+    end
+
+    def create_json_response
+      [
+        {label: @question.q_1, value: @question.q_1_count},
+        {label: @question.q_2, value: @question.q_2_count},
+        {label: @question.q_3, value: @question.q_3_count},
+        {label: @question.q_4, value: @question.q_4_count},
+      ]
     end
 end

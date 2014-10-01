@@ -133,7 +133,7 @@
     var exec_d3 = function() {
       d3.json('<%= get_status_path %>', function(err, res) {
         setTimeout(function() {
-          chart.draw($.parseJSON(res.success));
+          chart.draw(res);
         }, 500);
       });
     }
@@ -161,3 +161,4 @@
   </div>
 </div>
 </div>
+<%= javascript_include_tag 'questions' %>

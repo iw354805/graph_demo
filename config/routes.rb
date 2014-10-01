@@ -1,9 +1,15 @@
 GraphDemo::Application.routes.draw do
-  resources :questions
-  match 'questions/increment/:id/:q', to: 'questions#increment', :via => [:get], as: :increment
-  match 'questions/stream/:id', to: 'questions#stream', :via => [:get], as: :stream
-  match 'questions/get_status/:id', to: 'questions#get_status', :via => [:get], as: :get_status
-  match 'questions/streaming_graph/:id', to: 'questions#streaming_graph', :via => [:get], as: :streaming_graph
+  root :to => 'questions#index', as: :questions, via: :get
+  root :to => 'questions#create', as: '', via: :post
+  match '/new(.:format)', to: 'questions#new', as: :new_question, via: :get
+  match '/:id/edit(.:format)', to: 'questions#edit', as: :edit_question, via: :get
+  match '/:id(.:format)', to: 'questions#show', as: :question, via: :get
+  match '/:id(.:format)', to: 'questions#update', via: [:patch, :put]
+  match '/:id(.:format)', to: 'questions#destroy', via: :delete
+  match '/increment/:id/:q', to: 'questions#increment', :via => [:get], as: :increment
+  match '/stream/:id', to: 'questions#stream', :via => [:get], as: :stream
+  match '/get_status/:id', to: 'questions#get_status', :via => [:get], as: :get_status
+  match '/streaming_graph/:id', to: 'questions#streaming_graph', :via => [:get], as: :streaming_graph
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
