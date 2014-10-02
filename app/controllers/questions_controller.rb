@@ -3,6 +3,10 @@ class QuestionsController < ApplicationController
 
   before_action :set_question, only: [:stream, :get_status, :show, :streaming_graph, :edit, :update, :destroy, :increment]
 
+  def redirect
+    redirect_to action: :show, id: 1
+  end
+
   def stream
     response.headers['Content-Type'] = 'text/event-stream'
 

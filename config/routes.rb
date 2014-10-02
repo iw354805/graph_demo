@@ -1,15 +1,17 @@
 GraphDemo::Application.routes.draw do
-  root :to => 'questions#index', as: :questions, via: :get
-  root :to => 'questions#create', as: '', via: :post
-  match '/new(.:format)', to: 'questions#new', as: :new_question, via: :get
-  match '/:id/edit(.:format)', to: 'questions#edit', as: :edit_question, via: :get
-  match '/:id(.:format)', to: 'questions#show', as: :question, via: :get
-  match '/:id(.:format)', to: 'questions#update', via: [:patch, :put]
-  match '/:id(.:format)', to: 'questions#destroy', via: :delete
-  match '/increment/:id/:q', to: 'questions#increment', :via => [:get], as: :increment
-  match '/stream/:id', to: 'questions#stream', :via => [:get], as: :stream
-  match '/get_status/:id', to: 'questions#get_status', :via => [:get], as: :get_status
-  match '/streaming_graph/:id', to: 'questions#streaming_graph', :via => [:get], as: :streaming_graph
+  root :to => 'questions#redirect', via: :get
+  match '/q', to: 'questions#index', as: :questions, via: :get
+  match '/q', to: 'questions#create', as: '', via: :post
+  match '/q/new(.:format)', to: 'questions#create', as: '', via: :post
+  match '/q/new(.:format)', to: 'questions#new', as: :new_question, via: :get
+  match '/q/:id/edit(.:format)', to: 'questions#edit', as: :edit_question, via: :get
+  match '/q/:id(.:format)', to: 'questions#show', as: :question, via: :get
+  match '/q/:id(.:format)', to: 'questions#update', via: [:patch, :put]
+  match '/q/:id(.:format)', to: 'questions#destroy', via: :delete
+  match '/q/increment/:id/:q', to: 'questions#increment', :via => [:get], as: :increment
+  match '/q/stream/:id', to: 'questions#stream', :via => [:get], as: :stream
+  match '/q/get_status/:id', to: 'questions#get_status', :via => [:get], as: :get_status
+  match '/q/s/:id', to: 'questions#streaming_graph', :via => [:get], as: :streaming_graph
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
